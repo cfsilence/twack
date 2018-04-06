@@ -1,0 +1,19 @@
+<div class="row pt-5">
+  <div class="col-4 mx-auto">
+    <div class="card mb-3">
+      <div class="card-header bg-info text-white">
+        <h4 class="card-title mb-0">Login</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 mb-3">
+            <input type="text" placeholder="Username" class="form-control" id="username" [(ngModel)]="username" />
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white">
+        <button class="btn btn-primary btn-block" id="loginBtn" (click)="submitLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+</div>

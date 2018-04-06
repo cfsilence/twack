@@ -1,0 +1,81 @@
+@import 'variables';
+@import '../node_modules/font-awesome/scss/font-awesome';
+
+html, body {
+  font-family: 'Fira Sans', sans-serif;
+}
+
+.app-container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: .2fr .8fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'g0 g1';
+}
+
+.area-g0 {
+  grid-area: g0;
+  overflow-y: auto;
+  background-color: #511c20;
+}
+
+.area-g0 a {
+  color: white;
+}
+
+.channel-list .active {
+  background-color: #237e5d;
+}
+
+.area-g0 a:hover, .area-g0 a:focus, .area-g0 a.active {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.area-g1 {
+  grid-area: g1;
+}
+
+@media (min-height: 451px) {
+  .inner-app-container {
+    grid-template-rows: 10vh 80vh 10vh;
+  }
+}
+@media (min-height: 300px) and (max-height: 450px) {
+  .inner-app-container {
+    grid-template-rows: 10vh 70vh 20vh;
+  }
+}
+@media (max-height: 299px) {
+  .inner-app-container {
+    grid-template-rows: 10vh 65vh 25vh;
+  }
+}
+
+.inner-app-container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'ig0' 'ig1' 'ig2';
+}
+
+.area-ig0 {
+  grid-area: ig0;
+}
+
+.area-ig1 {
+  grid-area: ig1;
+  overflow-y: auto;
+}
+
+.area-ig2 {
+  grid-area: ig2;
+  align-items: baseline;
+}
+
+.channel-header {
+  position: sticky;
+  top: 0;
+  height: 50px;
+}

@@ -1,0 +1,48 @@
+<div class="app-container">
+  <div class="area-g0 text-white pt-3">
+    <div class="">
+      <div class="mb-3">
+        <div class="d-flex p-2">
+          <div class="h4 mb-0 align-self-center">Channels</div>
+          <div class="ml-auto align-self-center">
+            <a href="#" (click)="getChannels()"><i class="fa fa-refresh" [ngClass]="isGettingChannels ? 'fa-spin' : ''"></i></a>
+            <a href="#" class="pl-3" (click)="createChannel()"><i class="fa fa-plus-circle"></i></a>
+          </div>
+        </div>
+      </div>
+      <ul class="list-unstyled channel-list" *ngIf="channels">
+        <li class="" [ngClass]="currentChannel?.sid === channel?.sid ? 'active' : ''" *ngFor="let channel of channels;">
+          <a href="#" class="btn btn-link" (click)="enterChannel(channel.sid)"># {{channel.friendlyName}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="area-g1">
+    <div class="inner-app-container">
+      <div class="area-ig0 pt-3 pl-1">
+        <div *ngIf="currentChannel" class="channel-header h1">#{{currentChannel.friendlyName}}</div>
+      </div>
+      <div class="area-ig1 pt-3 pl-3" #chatDisplay>
+        <div *ngFor="let message of messages">
+          <div><span class="font-weight-bold">{{message.author}}</span>&nbsp;<small class="text-muted">{{message.dateUpdated | date: 'h:mm a'}}</small></div>
+          <div>{{message.body}}</div>
+        </div>
+      </div>
+      <div class="area-ig2 pl-1 pr-1">
+        <div id="chatContainer">
+          <form (submit)="sendMessage()" autocomplete="off" name="chatForm" id="chatForm">
+            <div class="input-group">
+              <input type="text" id="chatMessage" name="chatMessage" #chatElement class="form-control" [(ngModel)]="chatMessage" />
+              <span class="input-group-append">
+              <button class="btn btn-secondary" type="submit"><i class="fa fa-arrow-right"></i></button>
+            </span>
+            </div>
+          </form>
+          <div *ngIf="membersTyping.length">
+            <span class="form-text text-muted font-italic">{{whosTyping()}} is typing...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
