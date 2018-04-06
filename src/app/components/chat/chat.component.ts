@@ -40,30 +40,30 @@ export class ChatComponent implements OnInit, OnDestroy {
     private authService: AuthService,
   ) { }
 
-  ngOnInit() {
-    this.isConnecting = true;
-    this.chatService.connect(localStorage.getItem('twackToken'));
+ngOnInit() {
+  this.isConnecting = true;
+  this.chatService.connect(localStorage.getItem('twackToken'));
 
-    this.conSub = this.chatService.chatConnectedEmitter.subscribe( () => {
-      this.isConnected = true;
-      this.isConnecting = false;
+  this.conSub = this.chatService.chatConnectedEmitter.subscribe( () => {
+    this.isConnected = true;
+    this.isConnecting = false;
+    this.getChannels();
+    this.chatService.chatClient.on('channelAdded', () => {
       this.getChannels();
-      this.chatService.chatClient.on('channelAdded', () => {
-        this.getChannels();
-      });
-      this.chatService.chatClient.on('channelRemoved', () => {
-        this.getChannels();
-      });
-      this.chatService.chatClient.on('tokenExpired', () => {
-        this.authService.refreshToken();
-      });
-    })
-
-    this.disconSub = this.chatService.chatDisconnectedEmitter.subscribe( () => {
-      this.isConnecting = false;
-      this.isConnected = false;
     });
-  }
+    this.chatService.chatClient.on('channelRemoved', () => {
+      this.getChannels();
+    });
+    this.chatService.chatClient.on('tokenExpired', () => {
+      this.authService.refreshToken();
+    });
+  })
+
+  this.disconSub = this.chatService.chatDisconnectedEmitter.subscribe( () => {
+    this.isConnecting = false;
+    this.isConnected = false;
+  });
+}
 
   getChannels() {
     this.isGettingChannels = true;
@@ -83,6 +83,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   leaveChannel() {
+    if( this.typeObservable ) {
+      this.typeObservable.unsubscribe();
+    }
     if( this.currentChannel ) {
       return this.currentChannel.leave().then( (channel: Channel) => {
         channel.removeAllListeners('messageAdded');
@@ -150,10 +153,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     }).join(', ');
   }
 
-  sendMessage() {
-    this.currentChannel.sendMessage(this.chatMessage);
-    this.chatMessage = null;
-  }
+sendMessage() {
+  this.currentChannel.sendMessage(this.chatMessage);
+  this.chatMessage = null;
+}
 
   createChannel() {
     this.chatService.createChannel(`Channel ${this.channels.length+1}`);
